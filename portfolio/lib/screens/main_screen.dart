@@ -7,6 +7,7 @@ import 'package:portfolio/widgets/texts.dart';
 import '../constants/constants.dart';
 import '../constants/translatables.dart';
 import '../widgets/buttons.dart';
+import '../widgets/glitter_cursor.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -18,6 +19,11 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   bool isRussian = false; // Language toggle state
   bool showResume = false;
+  Offset _cursorPosition = Offset.zero;
+  bool _isMoving = false;
+  DateTime _lastMoveTime = DateTime.now();
+
+
 
   void setLanguage(bool toRussian) {
     setState(() {
@@ -52,120 +58,133 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       backgroundColor: AppColors.royalMidnight,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              left: 0,
-              top: 0,
-              child: Container(
-                width: size.width,
-                height: size.height,
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.03, vertical: size.height * 0.03),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Top bar
-                      isSmallMobile
-                        ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: topBarChildren,
-                        )
-                        : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: topBarChildren
-                        ),
-
-                      SizedBox(height: size.height*0.05,),
-
-                      Container(
-                        margin: EdgeInsets.only(left: size.width*0.1),
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              AppColors.creamyIvory.withOpacity(0),
-                              // AppColors.antiqueGold,
-                              AppColors.creamyIvory.withOpacity(0.2)
-                            ]
+        child: MouseRegion(
+          onHover: (event) {
+            final now = DateTime.now();
+            setState(() {
+              _cursorPosition = event.position;
+              _isMoving = now.difference(_lastMoveTime).inMilliseconds < 50;
+              _lastMoveTime = now;
+            });
+          },
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: GlitterTrail(cursorPosition: _cursorPosition, isMoving: _isMoving),
+              ),
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Container(
+                  width: size.width,
+                  height: size.height,
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.03, vertical: size.height * 0.03),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Top bar
+                        isSmallMobile
+                          ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: topBarChildren,
+                          )
+                          : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: topBarChildren
                           ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: reusableText(
-                            text: isRussian
-                                ? mainScreenTranslatableTexts['introText']!.russian
-                                : mainScreenTranslatableTexts['introText']!.english,
-                            textAlign: TextAlign.start,
 
-                        ),
-                      ),
+                        SizedBox(height: size.height*0.05,),
 
-                      const SizedBox(height: 5,),
-
-                      if(showResume)
-                        Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: size.width*0.1),
-                              width: size.width*0.8,
-                              child: ResumeGridPage(isRussian: isRussian,)
+                        Container(
+                          margin: EdgeInsets.only(left: size.width*0.1),
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                AppColors.creamyIvory.withOpacity(0),
+                                // AppColors.antiqueGold,
+                                AppColors.creamyIvory.withOpacity(0.2)
+                              ]
                             ),
-                            SizedBox(height: size.height*0.02,)
-                          ],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: reusableText(
+                              text: isRussian
+                                  ? mainScreenTranslatableTexts['introText']!.russian
+                                  : mainScreenTranslatableTexts['introText']!.english,
+                              textAlign: TextAlign.start,
+
+                          ),
                         ),
 
+                        const SizedBox(height: 5,),
 
-                      Center(
-                        child: Column(
-                          children: [
-                            if(showResume)
-                              DownloadResume(isRussian: isRussian),
-                            showResume ? SizedBox(height: size.height*0.02,) : SizedBox.shrink(),
-                            GestureDetector(
-                              onTap: (){
-                                setState(() {
-                                  showResume = !showResume;
-                                });
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  FaIcon(
-                                    showResume
-                                      ? FontAwesomeIcons.anglesUp
-                                      : FontAwesomeIcons.anglesDown,
-                                    size: 30,
-                                    color: AppColors.antiqueGold,
-                                  ),
-                                  SizedBox(width: 5,),
-                                  reusableText(
-                                    text: isRussian
-                                      ? showResume ? 'Скрыть резюме' : 'Просмотр в резюме'
-                                      : showResume ? 'Hide Resume' : 'View Resume',
-                                  )
-                                ],
+                        if(showResume)
+                          Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: size.width*0.1),
+                                width: size.width*0.8,
+                                child: ResumeGridPage(isRussian: isRussian,)
                               ),
-                            ),
-                          ],
+                              SizedBox(height: size.height*0.02,)
+                            ],
+                          ),
+
+
+                        Center(
+                          child: Column(
+                            children: [
+                              if(showResume)
+                                DownloadResume(isRussian: isRussian),
+                              showResume ? SizedBox(height: size.height*0.02,) : SizedBox.shrink(),
+                              GestureDetector(
+                                onTap: (){
+                                  setState(() {
+                                    showResume = !showResume;
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    FaIcon(
+                                      showResume
+                                        ? FontAwesomeIcons.anglesUp
+                                        : FontAwesomeIcons.anglesDown,
+                                      size: 30,
+                                      color: AppColors.antiqueGold,
+                                    ),
+                                    SizedBox(width: 5,),
+                                    reusableText(
+                                      text: isRussian
+                                        ? showResume ? 'Скрыть резюме' : 'Просмотр в резюме'
+                                        : showResume ? 'Hide Resume' : 'View Resume',
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
 
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            Positioned(
-              left: size.width*0.03,
-              top: size.height/2-150,
-              child: SocialMediaIcons()
-            )
-          ],
+              Positioned(
+                left: size.width*0.03,
+                top: size.height/2-150,
+                child: SocialMediaIcons()
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: LanguageToggleButton(isRussian: isRussian, onToggle: setLanguage),
