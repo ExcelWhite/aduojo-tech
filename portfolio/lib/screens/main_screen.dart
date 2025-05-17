@@ -28,6 +28,26 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isSmallMobile = size.width < 425;
+
+    final topBarChildren = [
+      Text(
+        'ADUOJO.TECH',
+        style: GoogleFonts.cinzel(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            color: AppColors.creamyIvory
+        ),
+      ),
+
+      CircleAvatar(
+        radius: 50,
+        backgroundColor: AppColors.royalMidnight,
+        child: ClipOval(
+          child: Image.asset(profilePicture, fit: BoxFit.cover, width: 100),
+        ),
+      )
+    ];
 
     return Scaffold(
       backgroundColor: AppColors.royalMidnight,
@@ -47,27 +67,15 @@ class _MainScreenState extends State<MainScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Top bar
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'ADUOJO.TECH',
-                            style: GoogleFonts.cinzel(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.creamyIvory
-                            ),
-                          ),
-
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundColor: AppColors.royalMidnight,
-                            child: ClipOval(
-                              child: Image.asset(profilePicture, fit: BoxFit.cover, width: 100),
-                            ),
-                          )
-                        ],
-                      ),
+                      isSmallMobile
+                        ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: topBarChildren,
+                        )
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: topBarChildren
+                        ),
 
                       SizedBox(height: size.height*0.05,),
 
@@ -98,37 +106,50 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(height: 5,),
 
                       if(showResume)
-                        Container(
-                          margin: EdgeInsets.only(left: size.width*0.1),
-                          width: size.width*0.8,
-                          child: ResumeGridPage(isRussian: isRussian,)
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: size.width*0.1),
+                              width: size.width*0.8,
+                              child: ResumeGridPage(isRussian: isRussian,)
+                            ),
+                            SizedBox(height: size.height*0.02,)
+                          ],
                         ),
 
+
                       Center(
-                        child: GestureDetector(
-                          onTap: (){
-                            setState(() {
-                              showResume = !showResume;
-                            });
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              FaIcon(
-                                showResume
-                                  ? FontAwesomeIcons.anglesUp
-                                  : FontAwesomeIcons.anglesDown,
-                                size: 30,
-                                color: AppColors.antiqueGold,
+                        child: Column(
+                          children: [
+                            if(showResume)
+                              DownloadResume(isRussian: isRussian),
+                            showResume ? SizedBox(height: size.height*0.02,) : SizedBox.shrink(),
+                            GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  showResume = !showResume;
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  FaIcon(
+                                    showResume
+                                      ? FontAwesomeIcons.anglesUp
+                                      : FontAwesomeIcons.anglesDown,
+                                    size: 30,
+                                    color: AppColors.antiqueGold,
+                                  ),
+                                  SizedBox(width: 5,),
+                                  reusableText(
+                                    text: isRussian
+                                      ? showResume ? 'Скрыть резюме' : 'Просмотр в резюме'
+                                      : showResume ? 'Hide Resume' : 'View Resume',
+                                  )
+                                ],
                               ),
-                              SizedBox(width: 5,),
-                              reusableText(
-                                text: isRussian
-                                  ? showResume ? 'Скрыть резюме' : 'Просмотр в резюме'
-                                  : showResume ? 'Hide Resume' : 'View Resume',
-                              )
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
 

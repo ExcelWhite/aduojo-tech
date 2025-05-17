@@ -29,122 +29,162 @@ final List<dynamic> experienceResumeEntries = [
     english: 'Flutter developer intern at COSM Labs, ITMO University, December, 2024 - till date',
     russian: 'Стажёр Flutter-разработчик в COSM Labs, ИТМО, декабрь 2024 - по настоящее время'
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.userGraduate
   },
   {
     'text': Translatable(
     english: 'Flutter developer, at Caldoc Systems December, 2023 - June 2024',
     russian: 'Flutter-разработчик в Caldoc Systems, декабрь 2023 - июнь 2024'
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.laptopCode
   },
 ];
 
-final List<dynamic> expertiseResumeTranslatableTexts = [
+final List<dynamic> expertiseResumeEntries = [
   {
     'text': Translatable(
       english: 'Firebase Integration',
       russian: 'Интеграция Firebase',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.fire
   },
   {
     'text': Translatable(
       english: 'Provider, Bloc, Riverpod state management',
       russian: 'Управление состоянием с помощью Provider, Bloc, Riverpod',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.codeBranch
   },
   {
     'text': Translatable(
       english: 'GoRouter, Navigator 2.0 navigation e.t.c',
       russian: 'Навигация с помощью GoRouter, Navigator 2.0 и т.д.',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.route
   },
   {
     'text': Translatable(
       english: 'RESTful API and 3rd party integrations',
       russian: 'RESTful API и интеграции с третьими сторонами',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.plug
   },
   {
     'text': Translatable(
       english: 'Flutter mobile and web',
       russian: 'Flutter для мобильных и веб-приложений',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.mobileScreenButton
   },
   {
     'text': Translatable(
       english: 'Flutter Testing',
       russian: 'Тестирование Flutter',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.vial
   },
   {
     'text': Translatable(
       english: 'Data Modeling and Optimization',
       russian: 'Моделирование данных и оптимизация',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.database
   },
   {
     'text': Translatable(
       english: 'CI/CD',
       russian: 'CI/CD',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.arrowsRotate
   },
   {
     'text': Translatable(
       english: 'Community Engagements',
       russian: 'Участие в сообществе',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.users
   },
   {
     'text': Translatable(
       english: 'Performance optimization',
       russian: 'Оптимизация производительности',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.gaugeHigh
   },
   {
     'text': Translatable(
       english: 'Animations and Widgets Optimization',
       russian: 'Анимация и Оптимизация виджетов',
     ),
-    'icon': FontAwesomeIcons.circleCheck
+    'icon': FontAwesomeIcons.wandMagicSparkles
   },
 ];
 
-final Map<String, Translatable> qualitiesResumeTranslatableTexts = {
-  'title': Translatable(english: 'Personal qualities', russian: 'Личные качества'),
-  'entry1': Translatable(english: 'Problem-Solving Skills', russian: 'Навыки решения проблем'),
-  'entry2': Translatable(english: 'Strong Communication Skills', russian: 'Сильные коммуникативные навыки'),
-  'entry3': Translatable(english: 'Time Management', russian: 'Управление временем'),
-  'entry4': Translatable(english: 'Adaptability', russian: 'Адаптивность'),
-  'entry5': Translatable(english: 'Attention to Details', russian: 'Внимание к деталям'),
-  'entry6': Translatable(english: 'Team Collaboration', russian: 'Командное сотрудничество'),
-  'entry7': Translatable(english: 'Creativity', russian: 'Креативность'),
-};
+final List<dynamic> qualitiesResumeEntries = [
+  {
+    'text': Translatable(english: 'Problem-Solving Skills', russian: 'Навыки решения проблем'),
+    'icon': FontAwesomeIcons.lightbulb
+  },
+  {
+    'text': Translatable(english: 'Strong Communication Skills', russian: 'Сильные коммуникативные навыки'),
+    'icon': FontAwesomeIcons.commentDots
+  },
+  {
+    'text': Translatable(english: 'Time Management', russian: 'Управление временем'),
+    'icon': FontAwesomeIcons.clock
+  },
+  {
+    'text': Translatable(english: 'Adaptability', russian: 'Адаптивность'),
+    'icon': FontAwesomeIcons.shuffle
+  },
+  {
+    'text': Translatable(english: 'Attention to Details', russian: 'Внимание к деталям'),
+    'icon': FontAwesomeIcons.eye
+  },
+  {
+    'text': Translatable(english: 'Team Collaboration', russian: 'Командное сотрудничество'),
+    'icon': FontAwesomeIcons.peopleGroup
+  },
+  {
+    'text': Translatable(english: 'Creativity', russian: 'Креативность'),
+    'icon': FontAwesomeIcons.paintbrush
+  }
+];
 
-final Map<String, Translatable> educationResumeTranslatableTexts = {
-  'title': Translatable(english: 'Education', russian: 'Образование'),
-  'entry1': Translatable(english: 'B.Sc Informatics and Computer Engineering, ITMO University, St. Petersburg', russian: 'Бакалавр информатики и компьютерной инженерии, ИТМО, Санкт-Петербург'),
-  'entry2': Translatable(english: 'September 2021 - May 2025', russian: 'Сентябрь 2021 - Май 2025'),
-};
+final List<dynamic> educationResumeEntries = [
+  {
+    'text': Translatable(
+      english: 'B.Sc Informatics and Computer Engineering',
+        russian: 'Бакалавр информатики и компьютерной техника'
+    ),
+    'icon': FontAwesomeIcons.graduationCap
+  },
+  {
+    'text': Translatable(
+      english: 'ITMO University, St. Petersburg',
+        russian: 'Университет ИТМО'
+    ),
+    'icon': FontAwesomeIcons.school
+  },
+  {
+    'text': Translatable(
+      english: 'September 2021 - June 2025',
+        russian: 'Сентябрь 2021 - Июнь 2025'
+    ),
+    'icon': FontAwesomeIcons.calendarDays
+  },
+];
 
-final Map<String, Translatable> moreCoreResumeTranslatableTexts = {
-  'title': Translatable(english: 'More Core Skills', russian: ''),
-  'entry1': Translatable(english: 'Java', russian: ''),
-  'entry2': Translatable(english: 'JavaScript', russian: ''),
-  'entry3': Translatable(english: 'NodeJS', russian: ''),
-  'entry4': Translatable(english: 'Python', russian: ''),
-  'entry5': Translatable(english: 'Backend Solutions', russian: ''),
-  'entry6': Translatable(english: 'Figma', russian: ''),
-  'entry7': Translatable(english: 'Git', russian: ''),
-  'entry8': Translatable(english: 'SQL', russian: ''),
-};
+final List<dynamic> moreCoreSkillsResumeEntries = [
+  {
+    'text': Translatable(english: 'Java, JS, NodeJS, Python, SQL', russian: 'Java, JS, NodeJS, Python, SQL'),
+    'icon': FontAwesomeIcons.code
+  },
+  {
+    'text': Translatable(
+        english: 'Backend Solutions, Project Management, Figma, Git',
+        russian: 'Бэкэнд решения, Управление проектами, Figma, Git'
+    ),
+    'icon': FontAwesomeIcons.toolbox
+  },
+];

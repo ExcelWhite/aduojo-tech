@@ -1,9 +1,9 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/constants/constants.dart';
 import 'package:portfolio/widgets/texts.dart';
-
 import '../constants/translatables.dart';
 
 class ResumeGridPage extends StatelessWidget {
@@ -13,50 +13,78 @@ class ResumeGridPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWideScreen = screenWidth >= 1440;
+
+    final children = [
+      HoverableSection(
+        title: Translatable(english: 'Experience', russian: 'Опыт'),
+        entries: experienceResumeEntries,
+        isRussian: isRussian,
+        crossAxisCellCount: isWideScreen ? 6 : 10,
+        mainAxisCellCount: 2,
+      ),
+      HoverableSection(
+        title: Translatable(english: 'Flutter Expertise', russian: 'Экспертиза Flutter'),
+        entries: expertiseResumeEntries,
+        isRussian: isRussian,
+        crossAxisCellCount: isWideScreen ? 4 : 10,
+        mainAxisCellCount: 4,
+      ),
+      HoverableSection(
+        title: Translatable(english: 'Personal qualities', russian: 'Личные качества'),
+        entries: qualitiesResumeEntries,
+        isRussian: isRussian,
+        crossAxisCellCount: isWideScreen ? 3 : 10,
+        mainAxisCellCount: 3,
+      ),
+      HoverableSection(
+        title: Translatable(english: 'Education', russian: 'Образование'),
+        entries: educationResumeEntries,
+        isRussian: isRussian,
+        crossAxisCellCount: isWideScreen ? 3 : 10,
+        mainAxisCellCount: 2,
+      ),
+      HoverableSection(
+        title: Translatable(english: 'More Core Skills', russian: 'Дополнительные Ключевые Навыки'),
+        entries: moreCoreSkillsResumeEntries,
+        isRussian: isRussian,
+        crossAxisCellCount: isWideScreen ? 7 : 10,
+        mainAxisCellCount: 2,
+      ),
+    ];
+
+    Widget layout = isWideScreen
+        ? StaggeredGrid.count(
+      crossAxisCount: 10,
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 12,
+      children: children,
+    )
+        : Column(
+      children: children
+          .map((child) => Padding(
+        padding: const EdgeInsets.only(bottom: 12.0),
+        child: child,
+      ))
+          .toList(),
+    );
+
     return Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: StaggeredGrid.count(
-          crossAxisCount: 10,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          children: [
-            HoverableSection(
-              title: Translatable(english: 'Experience', russian: 'Опыт'),
-              entries: experienceResumeEntries,
-              isRussian: isRussian,
-              crossAxisCellCount: 6,
-              mainAxisCellCount: 3,
-            ),
-            HoverableSection(
-              title: Translatable(english: 'Flutter Expertise', russian: 'Экспертиза Flutter'),
-              entries: expertiseResumeTranslatableTexts,
-              isRussian: isRussian,
-              crossAxisCellCount: 4,
-              mainAxisCellCount: 6,
-            ),
-            // HoverableSection(
-            //   title: 'Flutter Expertise',
-            //   crossAxisCellCount: 2,
-            //   mainAxisCellCount: 3,
-            // ),
-            // HoverableSection(
-            //   title: 'Soft Skills',
-            //   crossAxisCellCount: 1,
-            //   mainAxisCellCount: 2,
-            // ),
-            // HoverableSection(
-            //   title: 'Education',
-            //   crossAxisCellCount: 2,
-            //   mainAxisCellCount: 1,
-            // ),
-            // HoverableSection(
-            //   title: 'More Core Skills',
-            //   crossAxisCellCount: 4,
-            //   mainAxisCellCount: 1,
-            // ),
-          ],
+      padding: const EdgeInsets.all(12.0),
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 400),
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        layoutBuilder: (currentChild, previousChildren) {
+          return currentChild!;
+        },
+        child: KeyedSubtree(
+          key: ValueKey(isWideScreen),
+          child: layout,
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -73,7 +101,7 @@ class HoverableSection extends StatefulWidget {
     required this.entries,
     required this.crossAxisCellCount,
     required this.mainAxisCellCount,
-    required this.isRussian
+    required this.isRussian,
   });
 
   @override
@@ -85,78 +113,153 @@ class _HoverableSectionState extends State<HoverableSection> {
 
   @override
   Widget build(BuildContext context) {
-    // Adjust sizes as proportions; for example enlarge by 10-15% on hover
-    final scale = _hovering ? 1.1 : 1.0;
-    final color = _hovering ? AppColors.gildedEmerald : Colors.transparent;
-    final resumeWidth = MediaQuery.of(context).size.width*0.8;
+    final scale = _hovering ? 1.05 : 1.0;
+    final color = _hovering ? AppColors.gildedEmerald.withOpacity(0.5) : Colors.transparent;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final resumeWidth = screenWidth * 0.8;
+
+    final sectionContent = MouseRegion(
+      onEnter: (_) => setState(() => _hovering = true),
+      onExit: (_) => setState(() => _hovering = false),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        transform: Matrix4.identity()..scale(scale),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: _hovering
+              ? [
+            BoxShadow(
+                color: AppColors.velvetMaroon,
+                blurRadius: 12,
+                offset: Offset(0, 6)
+            )
+          ]
+              : [],
+        ),
+        padding: EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            reusableText(
+              text: widget.isRussian
+                  ? widget.title.russian
+                  : widget.title.english,
+              fontStyle: FontStyles.mediumBoldText,
+            ),
+            SizedBox(height: 10),
+            Column(
+              children: widget.entries.map((entry) {
+                Translatable translatable = entry['text'] as Translatable;
+                String text = widget.isRussian
+                    ? translatable.russian
+                    : translatable.english;
+                IconData icon = entry['icon'] as IconData;
+                double textWidth = math.min(
+                    (resumeWidth / 10 - 40) * widget.crossAxisCellCount,
+                    screenWidth * 0.9);
+
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 6.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FaIcon(
+                        icon,
+                        size: 20,
+                        color: AppColors.antiqueGold,
+                      ),
+                      SizedBox(width: 10),
+                      Flexible(
+                        child: reusableText(
+                          text: text,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            )
+          ],
+        ),
+      ),
+    );
+
+    // On small screen, just return directly
+    if (widget.crossAxisCellCount == 10) {
+      return sectionContent;
+    }
 
     return StaggeredGridTile.count(
       crossAxisCellCount: widget.crossAxisCellCount,
       mainAxisCellCount: widget.mainAxisCellCount,
-      child: MouseRegion(
-        onEnter: (_) => setState(() => _hovering = true),
-        onExit: (_) => setState(() => _hovering = false),
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          transform: Matrix4.identity()..scale(scale),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: _hovering
-                ? [BoxShadow(color: Colors.black54, blurRadius: 12, offset: Offset(0,6))]
-                : [],
-          ),
-          padding: EdgeInsets.all(24),
-          child: Column(
-            children: [
-              reusableText(
-                text: widget.isRussian ? widget.title.russian : widget.title.english,
-                fontStyle: FontStyles.mediumBoldText
-              ),
-              SizedBox(height: 10),
+      child: sectionContent,
+    );
+  }
+}
 
-              Column(
-                children: widget.entries.map((entry) {
-                  Translatable translatable = entry['text'] as Translatable;
-                  String text = widget.isRussian ? translatable.russian : translatable.english;
-                  IconData icon = entry['icon'] as IconData;
-                  double textWidth = (resumeWidth/10 -40)*widget.crossAxisCellCount;
+class DownloadResume extends StatefulWidget {
+  final bool isRussian;
 
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      FaIcon(icon, size: 20, color: AppColors.burnishedBrown,),
-                      SizedBox(width: 10,),
-                      SizedBox(
-                        width: textWidth,
-                        child: reusableText(
-                          text: text,
-                          //fontStyle: FontStyles.smallText,
-                          textAlign: TextAlign.start
-                        ))
-                    ],
-                  );
-                }).toList(),
-              )
-              // Center(
-              //   child: Text(
-              //     widget.title,
-              //     style: TextStyle(
-              //       fontSize: 24,
-              //       fontWeight: FontWeight.bold,
-              //       color: Colors.white,
-              //       shadows: _hovering
-              //           ? [Shadow(color: Colors.black45, blurRadius: 4, offset: Offset(1,1))]
-              //           : [],
-              //     ),
-              //   ),
-              // ),
-            ],
+  const DownloadResume({super.key, required this.isRussian});
+  @override
+  _DownloadResumeState createState() => _DownloadResumeState();
+}
+
+class _DownloadResumeState extends State<DownloadResume> {
+  bool _hovering = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final scale = _hovering ? 1.05 : 1.0;
+    final color = _hovering ? AppColors.gildedEmerald.withOpacity(0.5) : Colors.transparent;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovering = true),
+      onExit: (_) => setState(() => _hovering = false),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        transform: Matrix4.identity()..scale(scale),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: _hovering
+              ? [
+            BoxShadow(
+                color: AppColors.velvetMaroon,
+                blurRadius: 12,
+                offset: Offset(0, 6)
+            )
+          ]
+              : [],
+        ),
+        child: GestureDetector(
+          onTap: (){},
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.fileArrowDown,
+                  size: 30,
+                  color: AppColors.antiqueGold,
+                ),
+                SizedBox(width: 5,),
+                reusableText(
+                    text: widget.isRussian ? 'Скачать резюме' : 'Download Resume'
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+
 }
