@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/widgets/resume.dart';
+import 'package:portfolio/widgets/showroom.dart';
 import 'package:portfolio/widgets/socials.dart';
 import 'package:portfolio/widgets/texts.dart';
 import '../constants/constants.dart';
@@ -53,6 +54,14 @@ class _MainScreenState extends State<MainScreen> {
           child: Image.asset(profilePicture, fit: BoxFit.cover, width: 100),
         ),
       )
+    ];
+
+    final List<Widget> phoneWidgets = [
+      Image.asset('assets/images/carousel/1.png'),
+      Image.asset('assets/images/carousel/2.png'),
+      Image.asset('assets/images/carousel/3.png'),
+      Image.asset('assets/images/carousel/4.png'),
+      Image.asset('assets/images/carousel/5.png')
     ];
 
     return Scaffold(
@@ -171,7 +180,12 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
 
-
+                        Container(
+                          width: size.width*0.8,
+                          height: 932,
+                          margin: EdgeInsets.only(left: size.width*0.1),
+                          child: ShowroomCarousel(phoneWidgets: phoneWidgets)
+                        ),
                       ],
                     ),
                   ),
