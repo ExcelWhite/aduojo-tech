@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:portfolio/apps/apps.dart';
+import 'package:portfolio/apps/volt_valut/volt_vault.dart';
 import 'dart:ui';
+
+import 'package:portfolio/screens/app_show_screen.dart';
 
 class ShowroomCarousel extends StatefulWidget {
   final List<Widget> phoneWidgets;
@@ -65,51 +69,62 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
       onExit: (_) {
         _isHovered = false;
       },
-      child: SizedBox(
-        height: 932,
-        child: PageView.builder(
-          controller: _controller,
-          itemCount: _itemCount + 2,
-          itemBuilder: (context, index) {
-            int adjustedIndex = index == 0 ? _itemCount - 1 : (index == _itemCount + 1 ? 0 : index - 1);
+      child: PageView.builder(
+        controller: _controller,
+        itemCount: _itemCount + 2,
+        itemBuilder: (context, index) {
+          int adjustedIndex = index == 0 ? _itemCount - 1 : (index == _itemCount + 1 ? 0 : index - 1);
 
-            return AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                double value = 0.0;
-                if (_controller.position.haveDimensions) {
-                  value = _controller.page! - index;
-                }
+          final Apps app;
+          switch(adjustedIndex) {
+            case 0:
+              app = VoltVault();
+              break;
+            default:
+              app = VoltVault();
+          }
 
-                value = (1 - (value.abs() * 0.3)).clamp(0.6, 1.0);
-                final angle = (value < 1 ? value : 1) * 0.2;
+          return AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              double value = 0.0;
+              if (_controller.position.haveDimensions) {
+                value = _controller.page! - index;
+              }
 
-                return Center(
-                  child: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..scale(value)
-                      ..rotateY(angle),
-                    child: ClipRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Navigate to detail screen
-                          },
-                          child: Opacity(
-                            opacity: value,
-                            child: widget.phoneWidgets[adjustedIndex],
-                          ),
+              value = (1 - (value.abs() * 0.3)).clamp(0.6, 1.0);
+              final angle = (value < 1 ? value : 1) * 0.2;
+
+              return Center(
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..scale(value)
+                    ..rotateY(angle),
+                  child: ClipRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AppShowScreen(app: app)
+                            )
+                          );
+                        },
+                        child: Opacity(
+                          opacity: value,
+                          child: widget.phoneWidgets[adjustedIndex],
                         ),
                       ),
                     ),
                   ),
-                );
-              },
-            );
-          },
-        ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

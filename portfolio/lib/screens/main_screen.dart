@@ -35,7 +35,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isSmallMobile = size.width < 425;
+    final isMediumToSmallMobile = size.width <= 375;
+    final isMobile = size.width <= 450;
+    final isWideScreen = size.width > 1440;
 
     final topBarChildren = [
       Text(
@@ -94,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Top bar
-                        isSmallMobile
+                        isMediumToSmallMobile
                           ? Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: topBarChildren,
@@ -126,6 +128,7 @@ class _MainScreenState extends State<MainScreen> {
                                   ? mainScreenTranslatableTexts['introText']!.russian
                                   : mainScreenTranslatableTexts['introText']!.english,
                               textAlign: TextAlign.start,
+                              fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText
 
                           ),
                         ),
@@ -172,6 +175,7 @@ class _MainScreenState extends State<MainScreen> {
                                       text: isRussian
                                         ? showResume ? 'Скрыть резюме' : 'Просмотр в резюме'
                                         : showResume ? 'Hide Resume' : 'View Resume',
+                                      fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText
                                     )
                                   ],
                                 ),
@@ -182,7 +186,7 @@ class _MainScreenState extends State<MainScreen> {
 
                         Container(
                           width: size.width*0.8,
-                          height: 932,
+                          height: isMobile ? 500 : 932,
                           margin: EdgeInsets.only(left: size.width*0.1),
                           child: ShowroomCarousel(phoneWidgets: phoneWidgets)
                         ),

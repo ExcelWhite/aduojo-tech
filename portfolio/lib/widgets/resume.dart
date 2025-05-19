@@ -43,7 +43,7 @@ class ResumeGridPage extends StatelessWidget {
         entries: educationResumeEntries,
         isRussian: isRussian,
         crossAxisCellCount: isWideScreen ? 3 : 10,
-        mainAxisCellCount: 2,
+        mainAxisCellCount: 3,
       ),
       HoverableSection(
         title: Translatable(english: 'More Core Skills', russian: 'Дополнительные Ключевые Навыки'),
@@ -117,6 +117,7 @@ class _HoverableSectionState extends State<HoverableSection> {
     final color = _hovering ? AppColors.gildedEmerald.withOpacity(0.5) : Colors.transparent;
     final screenWidth = MediaQuery.of(context).size.width;
     final resumeWidth = screenWidth * 0.8;
+    final isWideScreen = screenWidth > 1440;
 
     final sectionContent = MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
@@ -146,9 +147,11 @@ class _HoverableSectionState extends State<HoverableSection> {
               text: widget.isRussian
                   ? widget.title.russian
                   : widget.title.english,
-              fontStyle: FontStyles.mediumBoldText,
+              fontStyle: isWideScreen ? FontStyles.bigBoldText : FontStyles.mediumBoldText,
             ),
             SizedBox(height: 10),
+
+            //entries
             Column(
               children: widget.entries.map((entry) {
                 Translatable translatable = entry['text'] as Translatable;
@@ -175,6 +178,7 @@ class _HoverableSectionState extends State<HoverableSection> {
                         child: reusableText(
                           text: text,
                           textAlign: TextAlign.start,
+                          //fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText,
                         ),
                       ),
                     ],
@@ -215,6 +219,7 @@ class _DownloadResumeState extends State<DownloadResume> {
   Widget build(BuildContext context) {
     final scale = _hovering ? 1.05 : 1.0;
     final color = _hovering ? AppColors.gildedEmerald.withOpacity(0.5) : Colors.transparent;
+    final isWideScreen = MediaQuery.of(context).size.width > 1440;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
@@ -251,7 +256,8 @@ class _DownloadResumeState extends State<DownloadResume> {
                 ),
                 SizedBox(width: 5,),
                 reusableText(
-                    text: widget.isRussian ? 'Скачать резюме' : 'Download Resume'
+                  text: widget.isRussian ? 'Скачать резюме' : 'Download Resume',
+                  fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText,
                 )
               ],
             ),

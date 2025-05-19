@@ -10,6 +10,7 @@ class AppColors {
   static final yellow = Color(0xFFFFD700);
   static final goldShade1 = Color(0xFFD4AF37);
   static final goldShade2 = Color(0xFFC5A942);
+  static final silver = Color(0xFFCCCCCC);
 }
 
 //fonts

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../constants/constants.dart';
 
@@ -89,4 +90,25 @@ class LanguageToggleButton extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget backButton({
+  required BuildContext context,
+}) {
+  return GestureDetector(
+    onTap: (){
+      Navigator.pop(context);
+    },
+    child: Container(
+      width: 60,
+      height: 60,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: AppColors.burnishedBrown.withOpacity(0.6),
+      ),
+      child: Center(
+        child: FaIcon(FontAwesomeIcons.chevronLeft, color: AppColors.creamyIvory, size: 40,),
+      ),
+    ),
+  );
 }
