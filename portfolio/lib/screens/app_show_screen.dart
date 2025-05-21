@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/constants/constants.dart';
 import 'package:portfolio/widgets/app_show.dart';
 import 'package:portfolio/widgets/buttons.dart';
-import 'package:portfolio/widgets/texts.dart';
 
 import '../apps/apps.dart';
 
 class AppShowScreen extends StatefulWidget {
   final Apps app;
-  const AppShowScreen({super.key, required this.app});
+  final Size phoneSize;
+  const AppShowScreen({super.key, required this.app, required this.phoneSize});
 
   @override
   _AppShowScreenState createState() => _AppShowScreenState();
@@ -28,18 +27,7 @@ class _AppShowScreenState extends State<AppShowScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final isWideScreen = size.width >= 1440;
-    Size? phoneSize;
-
-    if(size.width > 1920) {
-      phoneSize = Size(518.4, 1118.4);
-    } else if (size.width >= 1440) {
-      phoneSize = Size(344, 745.6);
-    } else if (size.width > 450) {
-      double height = size.height*0.8;
-      phoneSize = Size(height*0.4614, height);
-    } else {
-      phoneSize = Size(size.width*0.9, size.height*0.9);
-    }
+    double cardWidth = isWideScreen ? size.width*0.5 : size.width*0.8;
 
     return Scaffold(
       body: SafeArea(
@@ -66,19 +54,19 @@ class _AppShowScreenState extends State<AppShowScreen> {
                 isWideScreen
                   ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      appCard(content: widget.app.appDetails, isWideScreen: isWideScreen),
-                      DemoPhone(app: widget.app, size: size)
+                      appCard(content: widget.app.appDetails, isWideScreen: isWideScreen, width: cardWidth),
+                      DemoPhone(app: widget.app, size: widget.phoneSize,)
                     ],
                   )
                   : Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      DemoPhone(app: widget.app, size: size),
+                      DemoPhone(app: widget.app, size: widget.phoneSize),
                       SizedBox(height: size.height*0.02),
-                      appCard(content: widget.app.appDetails, isWideScreen: isWideScreen),
+                      appCard(content: widget.app.appDetails, isWideScreen: isWideScreen, width: cardWidth),
                     ],
                   )
               ],

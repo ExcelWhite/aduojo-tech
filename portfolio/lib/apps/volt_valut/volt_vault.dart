@@ -5,8 +5,9 @@ import 'package:portfolio/apps/volt_valut/screens/vault_overview_screen.dart';
 import '../apps.dart';
 
 class VoltVault extends Apps {
+  final Size size;
 
-  VoltVault(){
+  VoltVault(this.size){
     setInitialScreenKey();
     initializeAppDetails();
     initializeAppScreens();
@@ -29,7 +30,7 @@ class VoltVault extends Apps {
       " over their digital and real-world finances, enabling real-time currency "
       "bridging, intuitive visualizations, and enterprise-grade security.",
 
-      'features': "🌟 Core Features"
+      'features': "🌟 Core Features\n"
       "🔄 Unified Dashboard \n "
         "Real-time total balance across crypto and fiat \n"
         "Clean separation of crypto and card balances \n"
@@ -68,15 +69,28 @@ class VoltVault extends Apps {
   @override
   void initializeAppScreens() {
     appScreens = {
-      'vault_overview': (onNavigate) => VaultOverviewScreen(onNavigate: onNavigate),
-      'linkedAccounts': (onNavigate) => LinkedAccountsScreen(onNavigate: onNavigate),
-      // Add more screens as needed
+      'vault_overview': (onNavigate, onPop) => VaultOverviewScreen(
+          onNavigate: onNavigate,
+          onPop: onPop,
+          size: size
+      ),
+      'linkedAccounts': (onNavigate, onPop) => LinkedAccountsScreen(
+        onNavigate: onNavigate,
+        onPop: onPop,
+        size: size,
+      ),
     };
   }
-
 
   @override
   void setInitialScreenKey() {
     initialScreenKey = 'vault_overview';
   }
+}
+
+class VaultColors {
+  static final black = Color(0xFF0C0E12);
+  static final yellow = Color(0xFFFAD338);
+  static final yellowShade = Color(0xFFF0B90B);
+  static final white = Color(0xFFF5F5F5);
 }

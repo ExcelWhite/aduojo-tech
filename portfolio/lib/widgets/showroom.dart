@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:portfolio/apps/apps.dart';
 import 'package:portfolio/apps/volt_valut/volt_vault.dart';
 import 'dart:ui';
-
 import 'package:portfolio/screens/app_show_screen.dart';
 
 class ShowroomCarousel extends StatefulWidget {
   final List<Widget> phoneWidgets;
+  final Size phoneSize;
 
-  const ShowroomCarousel({super.key, required this.phoneWidgets});
+  const ShowroomCarousel({
+    super.key,
+    required this.phoneWidgets,
+    required this.phoneSize
+  });
 
   @override
   State<ShowroomCarousel> createState() => _ShowroomCarouselState();
@@ -78,10 +82,10 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
           final Apps app;
           switch(adjustedIndex) {
             case 0:
-              app = VoltVault();
+              app = VoltVault(widget.phoneSize);
               break;
             default:
-              app = VoltVault();
+              app = VoltVault(widget.phoneSize);
           }
 
           return AnimatedBuilder(
@@ -109,7 +113,7 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AppShowScreen(app: app)
+                              builder: (context) => AppShowScreen(app: app, phoneSize: widget.phoneSize,)
                             )
                           );
                         },

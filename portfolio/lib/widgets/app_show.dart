@@ -6,9 +6,11 @@ import '../constants/constants.dart';
 
 Widget appCard({
   required Map<String, String> content,
-  required bool isWideScreen
+  required bool isWideScreen,
+  required double width
 }){
   return Container(
+    width: width,
     padding: EdgeInsets.all(isWideScreen ? 24: 12),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
@@ -20,14 +22,16 @@ Widget appCard({
       mainAxisSize: MainAxisSize.min,
       children: [
         reusableText(
-            text: content['title']!,
-            fontStyle: isWideScreen ? FontStyles.bigBoldText: FontStyles.mediumBoldText
+          text: content['title']!,
+          fontStyle: isWideScreen ? FontStyles.bigBoldText: FontStyles.mediumBoldText,
+          textAlign: TextAlign.start
         ),
         const SizedBox(height: 10),
         Flexible(
           child: reusableText(
-              text: content['description']!,
-              fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText
+            text: content['description']!,
+            fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText,
+            textAlign: TextAlign.start
           ),
         ),
         const SizedBox(height: 10),
@@ -36,7 +40,8 @@ Widget appCard({
         Flexible(
           child: reusableText(
               text: content['features']!,
-              fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText
+              fontStyle: isWideScreen ? FontStyles.mediumText : FontStyles.regularText,
+              textAlign: TextAlign.start
           ),
         ),
       ],
@@ -57,6 +62,9 @@ class DemoPhone extends StatefulWidget {
 
 class _DemoPhoneState extends State<DemoPhone> {
   String? currentScreenKey;
+  List<String> screenStack = [];
+  bool isPopping = false;
+
 
   @override
   void initState() {
@@ -66,39 +74,52 @@ class _DemoPhoneState extends State<DemoPhone> {
 
   void changeScreen(String key) {
     setState(() {
+      isPopping = false;
+      screenStack.add(currentScreenKey!);
       currentScreenKey = key;
     });
+  }
+
+  void popScreen() {
+    if(screenStack.isNotEmpty) {
+      setState(() {
+        isPopping = true;
+        currentScreenKey = screenStack.removeLast();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenBuilder = widget.app.appScreens[currentScreenKey];
-    final screen = screenBuilder?.call(changeScreen) ?? SizedBox.shrink();
+    final screen = screenBuilder?.call(changeScreen, popScreen) ?? SizedBox.shrink();
 
     return SizedBox(
       width: widget.size.width+10,
       height: widget.size.height,
       child: Stack(
         children: [
-          //phone frame
           Positioned(
             left: 5,
             top: 0,
             child: Container(
               width: widget.size.width,
               height: widget.size.height,
+
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(color: AppColors.silver, width: 3),
                 color: Colors.transparent
               ),
+
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: AnimatedSwitcher(
                   duration: Duration(milliseconds: 400),
                   transitionBuilder: (child, animation) {
+                    final beginOffset = isPopping ? const Offset(-1.0, 0.0) : const Offset(1.0, 0.0);
                     final offsetAnimation = Tween<Offset>(
-                      begin: const Offset(1.0, 0.0), // Slide in from right
+                      begin: beginOffset,
                       end: Offset.zero,
                     ).animate(animation);
 
@@ -107,6 +128,7 @@ class _DemoPhoneState extends State<DemoPhone> {
                       child: child,
                     );
                   },
+
                   child: KeyedSubtree(
                     key: ValueKey(currentScreenKey),
                     child: screen,
@@ -123,29 +145,41 @@ class _DemoPhoneState extends State<DemoPhone> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _sideButton(widget.size),
+                _leftSideButton(widget.size),
                 SizedBox(height: widget.size.height*0.02, width: 5,),
-                _sideButton(widget.size)
+                _leftSideButton(widget.size)
               ],
             ),
           ),
           Positioned(
             right: 0,
             top: widget.size.height*0.23,
-            child: _sideButton(widget.size)
+            child: _rightSideButton(widget.size)
           )
         ],
       ),
     );
   }
 
-  Widget _sideButton(Size size) {
+  Widget _leftSideButton(Size size) {
     return Container(
       width: 5,
       height: size.height * 0.1,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+        color: AppColors.silver,
+      ),
+    );
+  }
+
+  Widget _rightSideButton(Size size) {
+    return Container(
+      width: 5,
+      height: size.height * 0.1,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
         color: AppColors.silver,
       ),
     );

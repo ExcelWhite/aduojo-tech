@@ -66,6 +66,19 @@ class _MainScreenState extends State<MainScreen> {
       Image.asset('assets/images/carousel/5.png')
     ];
 
+    Size? phoneSize;
+
+    if(size.width > 1920) {
+      phoneSize = Size(518.4, 1118.4);
+    } else if (size.width >= 1440) {
+      phoneSize = Size(344, 745.6);
+    } else if (size.width > 450) {
+      double height = size.height*0.8;
+      phoneSize = Size(height*0.4614, height);
+    } else {
+      phoneSize = Size(size.width*0.9, size.height*0.9);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.royalMidnight,
       body: SafeArea(
@@ -188,7 +201,7 @@ class _MainScreenState extends State<MainScreen> {
                           width: size.width*0.8,
                           height: isMobile ? 500 : 932,
                           margin: EdgeInsets.only(left: size.width*0.1),
-                          child: ShowroomCarousel(phoneWidgets: phoneWidgets)
+                          child: ShowroomCarousel(phoneWidgets: phoneWidgets, phoneSize: phoneSize,)
                         ),
                       ],
                     ),
