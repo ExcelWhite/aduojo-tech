@@ -25,7 +25,7 @@ class VaultOverviewScreen extends StatelessWidget {
 
               Row(
                 children: [
-                  Image.asset('assets/images/voltvault/vv_logo.png', width: size.width*0.15,),
+                  Image.asset('assets/images/logos/vv_logo.png', width: size.width*0.15,),
                   const Spacer(),
                   CircleAvatar(
                     radius: size.width*0.075,

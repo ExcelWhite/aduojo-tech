@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:portfolio/apps/apps.dart';
+import 'package:portfolio/apps/nutribot/nutribot.dart';
 import 'package:portfolio/apps/volt_valut/volt_vault.dart';
 import 'dart:ui';
 import 'package:portfolio/screens/app_show_screen.dart';
@@ -84,6 +85,8 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
             case 0:
               app = VoltVault(widget.phoneSize);
               break;
+            case 1:
+              app = Nutribot(widget.phoneSize);
             default:
               app = VoltVault(widget.phoneSize);
           }
