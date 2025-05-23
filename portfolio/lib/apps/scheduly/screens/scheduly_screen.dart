@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../../constants/constants.dart';
+
 class SchedulyScreen extends StatefulWidget {
   final void Function(String screenKey) onNavigate;
   final VoidCallback onPop;
@@ -48,6 +50,7 @@ class _SchedulyScreenState extends State<SchedulyScreen> {
       },
       child: Icon(
         _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        color: AppColors.royalMidnight,
       ),
     );
   }

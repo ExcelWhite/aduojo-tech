@@ -67,6 +67,37 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
     super.dispose();
   }
 
+  void _navigateToApp(Apps app) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AppShowScreen(
+          app: app,
+          phoneSize: widget.phoneSize,
+        ),
+      ),
+    );
+  }
+
+  void _showComingSoon() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Updates coming soon!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _showNotAvailable() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Please select a phone from the carousel.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
@@ -81,36 +112,6 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
         itemCount: _itemCount + 2,
         itemBuilder: (context, index) {
           int adjustedIndex = index == 0 ? _itemCount - 1 : (index == _itemCount + 1 ? 0 : index - 1);
-
-          final Apps? app;
-          switch(adjustedIndex) {
-            case 0:
-              app = Scheduly(widget.phoneSize);
-              break;
-            case 1:
-              app = VoltVault(widget.phoneSize);
-            case 2:
-              app = Kiddiegram(widget.phoneSize);
-              break;
-            case 3:
-              app = Nutribot(widget.phoneSize);
-            case 4:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Updates coming soon!'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-              app = null;
-            default:
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Please select a phone from the carousel.'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-              app = null;
-          }
 
           return AnimatedBuilder(
             animation: _controller,
@@ -134,16 +135,25 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
                       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                       child: GestureDetector(
                         onTap: () {
-                          if(app != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AppShowScreen(
-                                  app: app!,
-                                  phoneSize: widget.phoneSize,
-                                )
-                              )
-                            );
+                          switch (adjustedIndex) {
+                            case 0:
+                              _navigateToApp(Scheduly(widget.phoneSize));
+                              break;
+                            case 1:
+                              _navigateToApp(VoltVault(widget.phoneSize));
+                              break;
+                            case 2:
+                              _navigateToApp(Kiddiegram(widget.phoneSize));
+                              break;
+                            case 3:
+                              _navigateToApp(Nutribot(widget.phoneSize));
+                              break;
+                            case 4:
+                              _showComingSoon();
+                              break;
+                            default:
+                              _showNotAvailable();
+                              break;
                           }
                         },
                         child: Opacity(

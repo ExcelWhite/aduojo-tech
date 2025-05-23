@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:portfolio/widgets/texts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/constants.dart';
@@ -31,7 +30,7 @@ class SocialMediaIcons extends StatelessWidget {
           ),
           SizedBox(height: 20),
           SocialIcon(
-            icon: FontAwesomeIcons.at,
+            icon: FontAwesomeIcons.envelope,
             url: gmailUrl,
           ),
           SizedBox(height: 20),

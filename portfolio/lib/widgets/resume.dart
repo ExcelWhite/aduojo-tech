@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/constants/constants.dart';
 import 'package:portfolio/widgets/texts.dart';
+import '../backblaze/backblaze.dart';
 import '../constants/translatables.dart';
 
 class ResumeGridPage extends StatelessWidget {
@@ -25,7 +26,7 @@ class ResumeGridPage extends StatelessWidget {
         mainAxisCellCount: 2,
       ),
       HoverableSection(
-        title: Translatable(english: 'Flutter Expertise', russian: 'Экспертиза Flutter'),
+        title: Translatable(english: 'Flutter Expertise', russian: 'Навыки во Flutter'),
         entries: expertiseResumeEntries,
         isRussian: isRussian,
         crossAxisCellCount: isWideScreen ? 4 : 10,
@@ -215,6 +216,72 @@ class DownloadResume extends StatefulWidget {
 class _DownloadResumeState extends State<DownloadResume> {
   bool _hovering = false;
 
+  void _showDownloadOptions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.burnishedBrown,
+          title: reusableText(
+            text: widget.isRussian ? 'Выберите стандарт' : 'Select Standard',
+            color: AppColors.creamyIvory
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildDownloadOption(context, 'American Standard'),
+              SizedBox(height: 10),
+              _buildDownloadOption(context, 'Русский стандарт'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: reusableText(
+                text: widget.isRussian ? 'Закрыть' : 'Close',
+                color: AppColors.creamyIvory
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDownloadOption(BuildContext context, String label) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pop();
+        if (label.contains('American')) {
+          BackblazeService.downloadResumeEnglish();
+        } else if (label.contains('Русский') || label.contains('Russian')) {
+          BackblazeService.downloadResumeRussian();
+        }
+      },
+
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+        decoration: BoxDecoration(
+          color: AppColors.gildedEmerald.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [BoxShadow(
+              color: AppColors.velvetMaroon,
+              blurRadius: 12,
+              offset: Offset(0, 6),
+            )
+          ],
+        ),
+        child: reusableText(
+          text: label,
+          fontStyle: FontStyles.regularBoldText,
+          color: AppColors.creamyIvory,
+        ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final scale = _hovering ? 1.05 : 1.0;
@@ -242,7 +309,7 @@ class _DownloadResumeState extends State<DownloadResume> {
               : [],
         ),
         child: GestureDetector(
-          onTap: (){},
+          onTap: () => _showDownloadOptions(context),
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(

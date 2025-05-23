@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/constants/constants.dart';
 import 'package:video_player/video_player.dart';
 
 class KiddiegramScreen extends StatefulWidget {
@@ -48,6 +49,7 @@ class _KiddiegramScreenState extends State<KiddiegramScreen> {
       },
       child: Icon(
         _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        color: AppColors.royalMidnight,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:portfolio/apps/kiddiegram/screens/kiddiegram_screen.dart';
+import 'package:portfolio/apps/scheduly/screens/scheduly_screen.dart';
 
 import '../../constants/translatables.dart';
 import '../apps.dart';
@@ -56,7 +57,7 @@ class Scheduly extends Apps {
   @override
   void initializeAppScreens() {
     appScreens = {
-      'scheduly': (onNavigate, onPop) => KiddiegramScreen(
+      'scheduly': (onNavigate, onPop) => SchedulyScreen(
           onNavigate: onNavigate,
           onPop: onPop,
           size: size

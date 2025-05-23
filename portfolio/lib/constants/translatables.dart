@@ -154,8 +154,8 @@ final List<dynamic> qualitiesResumeEntries = [
 final List<dynamic> educationResumeEntries = [
   {
     'text': Translatable(
-      english: 'B.Sc Informatics and Computer Engineering',
-        russian: 'Бакалавр информатики и компьютерной техника'
+      english: 'B.Sc Computer Science and Engineering',
+        russian: 'Бакалавр Информатика и Вычислительная Техника'
     ),
     'icon': FontAwesomeIcons.graduationCap
   },
@@ -177,7 +177,7 @@ final List<dynamic> educationResumeEntries = [
 
 final List<dynamic> moreCoreSkillsResumeEntries = [
   {
-    'text': Translatable(english: 'Java, JS, NodeJS, Python, SQL', russian: 'Java, JS, NodeJS, Python, SQL'),
+    'text': Translatable(english: 'Java, JS, NodeJS, Python, C, SQL', russian: 'Java, JS, NodeJS, Python, C, SQL'),
     'icon': FontAwesomeIcons.code
   },
   {
