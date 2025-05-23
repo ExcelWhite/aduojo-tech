@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:portfolio/apps/apps.dart';
+import 'package:portfolio/apps/kiddiegram/kiddiegram.dart';
 import 'package:portfolio/apps/nutribot/nutribot.dart';
+import 'package:portfolio/apps/scheduly/scheduly.dart';
 import 'package:portfolio/apps/volt_valut/volt_vault.dart';
 import 'dart:ui';
 import 'package:portfolio/screens/app_show_screen.dart';
@@ -80,15 +82,34 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
         itemBuilder: (context, index) {
           int adjustedIndex = index == 0 ? _itemCount - 1 : (index == _itemCount + 1 ? 0 : index - 1);
 
-          final Apps app;
+          final Apps? app;
           switch(adjustedIndex) {
             case 0:
-              app = VoltVault(widget.phoneSize);
+              app = Scheduly(widget.phoneSize);
               break;
             case 1:
-              app = Nutribot(widget.phoneSize);
-            default:
               app = VoltVault(widget.phoneSize);
+            case 2:
+              app = Kiddiegram(widget.phoneSize);
+              break;
+            case 3:
+              app = Nutribot(widget.phoneSize);
+            case 4:
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Updates coming soon!'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              app = null;
+            default:
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Please select a phone from the carousel.'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              app = null;
           }
 
           return AnimatedBuilder(
@@ -113,12 +134,17 @@ class _ShowroomCarouselState extends State<ShowroomCarousel> {
                       filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AppShowScreen(app: app, phoneSize: widget.phoneSize,)
-                            )
-                          );
+                          if(app != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppShowScreen(
+                                  app: app!,
+                                  phoneSize: widget.phoneSize,
+                                )
+                              )
+                            );
+                          }
                         },
                         child: Opacity(
                           opacity: value,

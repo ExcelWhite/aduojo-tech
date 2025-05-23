@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/constants/translatables.dart';
 import 'package:portfolio/widgets/texts.dart';
 
 import '../apps/apps.dart';
 import '../constants/constants.dart';
 
 Widget appCard({
-  required Map<String, String> content,
+  required Map<String, Translatable> appDetails,
   required bool isWideScreen,
-  required double width
+  required double width,
+  required bool isRussian
 }){
+  Map<String, String> content = isRussian
+      ? {
+        'title': appDetails['title']!.russian,
+        'description': appDetails['description']!.russian,
+        'features': appDetails['features']!.russian
+      }
+      : {
+        'title': appDetails['title']!.english,
+        'description': appDetails['description']!.english,
+        'features': appDetails['features']!.english
+      };
   return Container(
     width: width,
     padding: EdgeInsets.all(isWideScreen ? 24: 12),
@@ -35,7 +48,10 @@ Widget appCard({
           ),
         ),
         const SizedBox(height: 10),
-        reusableText(text: 'Projected Features', fontStyle: isWideScreen ? FontStyles.mediumBoldText : FontStyles.regularBoldText),
+        reusableText(
+            text: isRussian ?'Projected Features' : 'Ожидаемые особенности',
+            fontStyle: isWideScreen ? FontStyles.mediumBoldText : FontStyles.regularBoldText
+        ),
         const SizedBox(height: 10),
         Flexible(
           child: reusableText(

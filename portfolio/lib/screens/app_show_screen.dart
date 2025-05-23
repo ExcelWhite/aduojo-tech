@@ -15,12 +15,19 @@ class AppShowScreen extends StatefulWidget {
 }
 
 class _AppShowScreenState extends State<AppShowScreen> {
+  bool isRussian = false;
 
   @override
   void initState() {
     super.initState();
     widget.app.initializeAppDetails();
     widget.app.initializeAppScreens();
+  }
+
+  void setLanguage(bool toRussian) {
+    setState(() {
+      isRussian = toRussian; // Toggle the language
+    });
   }
 
   @override
@@ -56,7 +63,12 @@ class _AppShowScreenState extends State<AppShowScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      appCard(content: widget.app.appDetails, isWideScreen: isWideScreen, width: cardWidth),
+                      appCard(
+                        appDetails: widget.app.appDetails,
+                        isWideScreen: isWideScreen,
+                        width: cardWidth,
+                        isRussian: isRussian
+                      ),
                       DemoPhone(app: widget.app, size: widget.phoneSize,)
                     ],
                   )
@@ -66,7 +78,12 @@ class _AppShowScreenState extends State<AppShowScreen> {
                     children: [
                       DemoPhone(app: widget.app, size: widget.phoneSize),
                       SizedBox(height: size.height*0.02),
-                      appCard(content: widget.app.appDetails, isWideScreen: isWideScreen, width: cardWidth),
+                      appCard(
+                          appDetails: widget.app.appDetails,
+                          isWideScreen: isWideScreen,
+                          width: cardWidth,
+                          isRussian: isRussian
+                      ),
                     ],
                   )
               ],
@@ -74,6 +91,8 @@ class _AppShowScreenState extends State<AppShowScreen> {
           ),
         )
       ),
+      floatingActionButton: LanguageToggleButton(isRussian: isRussian, onToggle: setLanguage),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

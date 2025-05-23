@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/constants/translatables.dart';
 
 abstract class Apps {
   // App metadata
-  Map<String, String> appDetails = {};
+  Map<String, Translatable> appDetails = {};
   String initialScreenKey = '';
 
   // KEY FIX: Map screenKey -> screen builder
