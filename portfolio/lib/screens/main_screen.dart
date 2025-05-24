@@ -199,7 +199,7 @@ class _MainScreenState extends State<MainScreen> {
 
                         Container(
                           width: size.width*0.8,
-                          height: isMobile ? 500 : 932,
+                          height: isMobile ? 500 : 720,
                           margin: EdgeInsets.only(left: size.width*0.1),
                           child: ShowroomCarousel(phoneWidgets: phoneWidgets, phoneSize: phoneSize,)
                         ),
