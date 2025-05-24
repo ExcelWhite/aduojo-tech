@@ -48,10 +48,10 @@ Widget appCard({
           ),
         ),
         const SizedBox(height: 10),
-        reusableText(
-            text: isRussian ? 'Ожидаемые особенности' : 'Projected Features',
-            fontStyle: isWideScreen ? FontStyles.mediumBoldText : FontStyles.regularBoldText
-        ),
+        // reusableText(
+        //     text: isRussian ? 'Ожидаемые особенности' : 'Projected Features',
+        //     fontStyle: isWideScreen ? FontStyles.mediumBoldText : FontStyles.regularBoldText
+        // ),
         const SizedBox(height: 10),
         Flexible(
           child: reusableText(
