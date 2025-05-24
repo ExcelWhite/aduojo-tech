@@ -49,7 +49,7 @@ Widget appCard({
         ),
         const SizedBox(height: 10),
         reusableText(
-            text: isRussian ?'Projected Features' : 'Ожидаемые особенности',
+            text: isRussian ? 'Ожидаемые особенности' : 'Projected Features',
             fontStyle: isWideScreen ? FontStyles.mediumBoldText : FontStyles.regularBoldText
         ),
         const SizedBox(height: 10),
